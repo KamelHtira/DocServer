@@ -1,6 +1,6 @@
-<p align="center"><img src="./resources/useCaseGlobaleProjectMedDashboard.PNG"></p>
+<p align="center"><img src="./resources/useCaseGlobaleProjectMedDashboard.png"></p>
 <br>
-<p align="center"><img src="./resources/useCaseGlobaleProjectMedMobileApp.PNG"></p>
+<p align="center"><img src="./resources/useCaseGlobaleProjectMedMobileApp.png"></p>
 
 # MedServer
 ```
