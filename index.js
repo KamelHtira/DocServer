@@ -27,9 +27,9 @@ db.once('open', function() {
 
 
 app.get('/',(req,res)=>{
-    res.json({response:"Med Server is Working.."})
+    res.json({response:"Doc Server is Working.."})
 })
 
 app.listen(3001, ()=>{
-    console.log("med server working on port 3001..");
+    console.log("Doc server working on port 3001..");
 })
