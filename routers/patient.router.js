@@ -1,6 +1,6 @@
 const express = require('express');
 const router = new express.Router();
-const { createPatient, getAllPatients, getPatientById, updatePatient, deletePatient, deletePatients } = require('../controllers/patients.controler');
+const { createPatient, getAllPatients, getPatientById, updatePatient, deletePatient, deletePatients } = require('../controllers/patients.controller');
 
 
 router.use(express.json())
