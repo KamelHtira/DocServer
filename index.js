@@ -2,8 +2,12 @@ const express=require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const patientRouter = require('./routers/patient.router');
+const appointmentRouter = require('./routers/appointment.router');
+const loginRouter = require('./routers/login.router');
 const transactionRouter = require('./routers/transaction.router');
 const exportRouter = require('./routers/export.router');
+
+
 
 require('dotenv').config();
 
@@ -12,10 +16,13 @@ app.use(cors())
 
 // Routers : 
 app.use(patientRouter);
-app.use(transactionRouter);
-app.use("/download",exportRouter);
 
-// database connection
+app.use(appointmentRouter);
+app.use(loginRouter);
+app.use(exportRouter);
+app.use(transactionRouter);
+
+
 mongoose.set('strictQuery', true);
 mongoose.connect("mongodb+srv://hedi:1234@cluster0.qfe1yrj.mongodb.net/?retryWrites=true&w=majority", {useNewUrlParser: true});
 

@@ -35,6 +35,7 @@ const getPatientById = async (req, res) => {
 
 const updatePatient = async (req, res) => {
   const updates = Object.keys(req.body);
+
   const allowedUpdates = ["firstName", "lastName"];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
@@ -73,6 +74,7 @@ const deletePatient = async (req, res) => {
 const deletePatients = async (req, res) => {
   try {
     const deletedPatients = await Patient.deleteMany({
+
       _id: { $in: req.body.patientIds },
     });
     res
@@ -89,5 +91,7 @@ module.exports = {
   getPatientById,
   updatePatient,
   deletePatient,
+
   deletePatients,
 };
+
