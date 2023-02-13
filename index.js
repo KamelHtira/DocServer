@@ -2,13 +2,17 @@ const express=require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const patientRouter = require('./routers/patient.router');
+const transactionRouter = require('./routers/transaction.router');
 const exportRouter = require('./routers/export.router');
 
 require('dotenv').config();
 
 app = express()
 app.use(cors())
+
+// Routers : 
 app.use(patientRouter);
+app.use(transactionRouter);
 app.use("/download",exportRouter);
 
 // database connection

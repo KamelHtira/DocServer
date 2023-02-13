@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const patientSchema = require('../models/patients')
-const Patient = mongoose.model('Patient', patientSchema);
+const mongoose = require("mongoose");
+const patientSchema = require("../models/patient");
+const Patient = mongoose.model("Patient", patientSchema);
 
 const createPatient = async (req, res) => {
   const newPatient = new Patient(req.body);
@@ -35,15 +35,21 @@ const getPatientById = async (req, res) => {
 
 const updatePatient = async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ['firstName', 'lastName'];
-  const isValidOperation = updates.every(update => allowedUpdates.includes(update));
+  const allowedUpdates = ["firstName", "lastName"];
+  const isValidOperation = updates.every((update) =>
+    allowedUpdates.includes(update)
+  );
 
   if (!isValidOperation) {
-    return res.status(400).send({ error: 'Invalid updates!' });
+    return res.status(400).send({ error: "Invalid updates!" });
   }
 
   try {
-    const patientToUpdate = await Patient.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const patientToUpdate = await Patient.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
     if (!patientToUpdate) {
       return res.status(404).send();
     }
@@ -67,11 +73,13 @@ const deletePatient = async (req, res) => {
 const deletePatients = async (req, res) => {
   try {
     const deletedPatients = await Patient.deleteMany({
-      _id: { $in: req.body.patientIds }
+      _id: { $in: req.body.patientIds },
     });
-    res.status(200).json({ message: 'Patients deleted successfully', deletedPatients });
+    res
+      .status(200)
+      .json({ message: "Patients deleted successfully", deletedPatients });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to delete patients', error });
+    res.status(500).json({ message: "Failed to delete patients", error });
   }
 };
 
@@ -81,5 +89,5 @@ module.exports = {
   getPatientById,
   updatePatient,
   deletePatient,
-  deletePatients
+  deletePatients,
 };
