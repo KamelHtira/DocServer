@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const patientRouter = require('./routers/patient.router');
 const appointmentRouter = require('./routers/appointment.router');
 const loginRouter = require('./routers/login.router');
+const exportRouter = require('./routers/export.router');
+
 
 
 require('dotenv').config();
@@ -13,6 +15,8 @@ app.use(cors())
 app.use(patientRouter);
 app.use(appointmentRouter);
 app.use(loginRouter);
+app.use(exportRouter);
+
 
 mongoose.set('strictQuery', true);
 mongoose.connect("mongodb+srv://hedi:1234@cluster0.qfe1yrj.mongodb.net/?retryWrites=true&w=majority", {useNewUrlParser: true});
