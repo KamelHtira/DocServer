@@ -7,7 +7,7 @@ const {
   updatePatient,
   deletePatient,
   deletePatients,
-} = require("../controllers/patients.controler");
+} = require("../controllers/patients.controller");
 
 router.use(express.json());
 
