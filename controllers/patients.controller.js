@@ -34,17 +34,6 @@ const getPatientById = async (req, res) => {
 };
 
 const updatePatient = async (req, res) => {
-  const updates = Object.keys(req.body);
-
-  const allowedUpdates = ["firstName", "lastName"];
-  const isValidOperation = updates.every((update) =>
-    allowedUpdates.includes(update)
-  );
-
-  if (!isValidOperation) {
-    return res.status(400).send({ error: "Invalid updates!" });
-  }
-
   try {
     const patientToUpdate = await Patient.findByIdAndUpdate(
       req.params.id,

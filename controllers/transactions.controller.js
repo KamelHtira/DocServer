@@ -34,14 +34,6 @@ const getTransactionById = async (req, res) => {
 };
 
 const updateTransaction = async (req, res) => {
-  const updates = Object.keys(req.body);
-  const allowedUpdates = ['firstName', 'lastName'];
-  const isValidOperation = updates.every(update => allowedUpdates.includes(update));
-
-  if (!isValidOperation) {
-    return res.status(400).send({ error: 'Invalid updates!' });
-  }
-
   try {
     const transactionToUpdate = await Transaction.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!transactionToUpdate) {
