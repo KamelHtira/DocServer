@@ -23,11 +23,11 @@ const getAllPatients = async (req, res) => {
 
 const getPatientById = async (req, res) => {
   try {
-    const Patient = await Patient.findById(req.params.id);
-    if (!Patient) {
+    const PatientToShow = await Patient.findById(req.params.id);
+    if (!PatientToShow) {
       return res.status(404).send();
     }
-    res.send(Patient);
+    res.send(PatientToShow);
   } catch (error) {
     res.status(500).send(error);
   }

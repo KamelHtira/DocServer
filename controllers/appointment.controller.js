@@ -23,11 +23,11 @@ res.status(500).send(error);
 
 const getAppointmentById = async (req, res) => {
 try {
-const appointment = await Appointment.findById(req.params.id);
-if (!appointment) {
+const AppointmentToShow = await Appointment.findById(req.params.id);
+if (!AppointmentToShow) {
 return res.status(404).send();
 }
-res.send(appointment);
+res.send(AppointmentToShow);
 } catch (error) {
 res.status(500).send(error);
 }
