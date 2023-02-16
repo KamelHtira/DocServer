@@ -6,9 +6,6 @@ const appointmentRouter = require('./routers/appointment.router');
 const loginRouter = require('./routers/login.router');
 const transactionRouter = require('./routers/transaction.router');
 const exportRouter = require('./routers/export.router');
-
-
-
 require('dotenv').config();
 
 app = express()
@@ -23,6 +20,9 @@ app.use(exportRouter);
 app.use(transactionRouter);
 
 
+app.use(express.json());
+
+
 mongoose.set('strictQuery', true);
 mongoose.connect("mongodb+srv://hedi:1234@cluster0.qfe1yrj.mongodb.net/?retryWrites=true&w=majority", {useNewUrlParser: true});
 
@@ -33,6 +33,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("Connected to MongoDB using Mongoose");
 });
+
 
 
 app.get('/',(req,res)=>{

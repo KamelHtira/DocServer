@@ -1,8 +1,9 @@
 const express = require("express");
 const router = new express.Router();
 
-const { exportPatients } = require("../controllers/export.controller")
+const { sendData, downloadData } = require("../controllers/export.controller")
 
-router.post("/download", exportPatients);
+router.post("/download", sendData);
+router.get("/download/:filename", downloadData);
 
 module.exports = router;
