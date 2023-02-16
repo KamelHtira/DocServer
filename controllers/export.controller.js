@@ -12,7 +12,6 @@ const stat = promisify(fs.stat);
 const sendData = async (req, res) => {
   try {
     const data = req.body;
-
     // Create a unique filename for the CSV file
     const filename = `data-${uuidv4()}.csv`;
 
@@ -25,8 +24,9 @@ const sendData = async (req, res) => {
 
     // Send the download link to the client
     const downloadLink = `${req.protocol}://${req.get('host')}/download/${filename}`;
-    res.send(downloadLink);
+    res.send({downloadLink:downloadLink});
   } catch (error) {
+    console.log(error);
     res.status(500).send(`Error: ${error.message}`);
   }
 };
