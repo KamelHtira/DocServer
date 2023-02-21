@@ -34,13 +34,6 @@ res.status(500).send(error);
 };
 
 const updateAppointment = async (req, res) => {
-const updates = Object.keys(req.body);
-const allowedUpdates = ['date', 'time', 'name', 'description'];
-const isValidOperation = updates.every(update => allowedUpdates.includes(update));
-
-if (!isValidOperation) {
-return res.status(400).send({ error: 'Invalid updates!' });
-}
 
 try {
 const appointmentToUpdate = await Appointment.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
