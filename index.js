@@ -5,7 +5,7 @@ const patientRouter = require('./routers/patient.router');
 const appointmentRouter = require('./routers/appointment.router');
 const loginRouter = require('./routers/login.router');
 const transactionRouter = require('./routers/transaction.router');
-const exportRouter = require('./routers/export.router');
+
 require('dotenv').config();
 
 app = express()
@@ -13,10 +13,8 @@ app.use(cors())
 
 // Routers : 
 app.use(patientRouter);
-
 app.use(appointmentRouter);
 app.use(loginRouter);
-app.use(exportRouter);
 app.use(transactionRouter);
 
 
