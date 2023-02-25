@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
-const transaction = mongoose.Schema({
-    amount : Number,
-    description : String,
-    type : String,
-    date : String, // DD/MM/YYYY
-})
-
-module.exports =  transaction;
+const transactionSchema = mongoose.Schema({
+  amount: Number,
+  description: String,
+  type: String,
+  date: String, // DD/MM/YYYY
+});
+const Transaction = mongoose.model("Transaction", transactionSchema);
+module.exports = Transaction;

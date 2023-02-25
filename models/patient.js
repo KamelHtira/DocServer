@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const patient = mongoose.Schema({
+const patientSchema = mongoose.Schema({
   firstName: String,
   lastName: String,
   email: String,
@@ -9,5 +9,5 @@ const patient = mongoose.Schema({
   address: String,
   phone: String,
 });
-
-module.exports = patient;
+const Patient = mongoose.model("Patient", patientSchema);
+module.exports = Patient;

@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
-const patientSchema = require("../models/patient");
-const Patient = mongoose.model("Patient", patientSchema);
+const Patient = require("../models/patient");
 
 const createPatient = async (req, res) => {
   const newPatient = new Patient(req.body);
@@ -63,7 +61,6 @@ const deletePatient = async (req, res) => {
 const deletePatients = async (req, res) => {
   try {
     const deletedPatients = await Patient.deleteMany({
-
       _id: { $in: req.body.patientIds },
     });
     res
@@ -83,4 +80,3 @@ module.exports = {
 
   deletePatients,
 };
-
