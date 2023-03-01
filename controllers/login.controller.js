@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const { compareSync} = require('bcrypt');
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -10,7 +11,7 @@ const login = async (req, res) => {
       return res.status(400).json({ msg: "User not found" });
     }
 
-    if (user.password !== password) {
+    if (compareSync(user.password,password)) {
       return res.status(400).json({ msg: "Incorrect password" });
     }
 
