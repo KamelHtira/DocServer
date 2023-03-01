@@ -5,7 +5,7 @@ const User = require("../models/user.js");
 
 function signup(req,res){
   const user = new User({
-    username: req.body.username,
+    email: req.body.email,
     password: hashSync(req.body.password, 10)
 })
 
