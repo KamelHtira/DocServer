@@ -11,7 +11,7 @@ const login = async (req, res) => {
       return res.status(400).json({ msg: "User not found" });
     }
 
-    if (compareSync(user.password,password)) {
+    if (!compareSync(password,user.password)) {
       return res.status(400).json({ msg: "Incorrect password" });
     }
 
