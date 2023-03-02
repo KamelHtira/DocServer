@@ -74,11 +74,12 @@ const updatePassword = async (req, res) => {
       return res.status(400).send("Invalid current password");
     }
 
-    userToUpdate.password = req.body.newPassword;
+    userToUpdate.password = hashSync( req.body.newPassword,10);
     await userToUpdate.save();
 
     res.send("Password updated successfully");
   } catch (error) {
+    console.log(error);
     res.status(400).send(error);
   }
 };
