@@ -5,6 +5,7 @@ const patientRouter = require('./routers/patient.router');
 const appointmentRouter = require('./routers/appointment.router');
 const loginRouter = require('./routers/login.router');
 const signupRouter = require('./routers/signup.router');
+const accountRouter = require('./routers/user.router');
 const transactionRouter = require('./routers/transaction.router');
 
 require('dotenv').config();
@@ -14,6 +15,7 @@ app.use(cors())
 
 // Routers : 
 app.use(patientRouter);
+app.use(accountRouter);
 app.use(appointmentRouter);
 app.use(signupRouter);
 app.use(loginRouter);
