@@ -8,7 +8,7 @@ const createUser = async (req, res) => {
         firsName: req.body.firstName,
         lastName: req.body.lastName,
         phone: req.body.phone,
-        birthDay: req.body.birthDay,
+        birthday: req.body.birthday,
         address: req.body.address,
         state: req.body.state,
         type: req.body.type
