@@ -6,11 +6,20 @@ const userSchema = mongoose.Schema({
   firsName: String,
   lastName: String,
   phone: String,
-  birthDay: String,
+  birthday: String,
   address: String,
   state: String,
   type: String,
-  access: {dashboard:false,patient:false,transaction:false, setting:false, appointment:false}
+  access: {
+    type: {},
+    default: {
+      dashboard: false,
+      patient: false,
+      transaction: false,
+      setting: false,
+      appointment: false,
+    },
+  },
 });
 const User = mongoose.model("User", userSchema);
 module.exports = User;
