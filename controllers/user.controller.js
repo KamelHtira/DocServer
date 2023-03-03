@@ -1,31 +1,35 @@
 const User = require("../models/user");
-const { hashSync, compareSync} = require('bcrypt');
+const { hashSync, compareSync } = require("bcrypt");
 
 const createUser = async (req, res) => {
-    const user = new User({
-        email: req.body.email,
-        password: hashSync(req.body.password, 10),
-        firsName: req.body.firstName,
-        lastName: req.body.lastName,
-        phone: req.body.phone,
-        birthday: req.body.birthday,
-        address: req.body.address,
-        state: req.body.state,
-        type: req.body.type
+  const user = new User({
+    email: req.body.email,
+    password: hashSync(req.body.password, 10),
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    phone: req.body.phone,
+    birthday: req.body.birthday,
+    address: req.body.address,
+    state: req.body.state,
+    type: req.body.type,
+    access: req.body.access,
+  });
+
+  user
+    .save()
+    .then((user) => {
+      res.send({
+        success: true,
+        message: "User created successfully.",
+      });
     })
-    
-    user.save().then(user => {
-        res.send({
-            success: true,
-            message: "User created successfully."
-        })
-    }).catch(err => {
-        res.send({
-            success: false,
-            message: "Something went wrong",
-            error: err
-        })
-    })
+    .catch((err) => {
+      res.send({
+        success: false,
+        message: "Something went wrong",
+        error: err,
+      });
+    });
 };
 
 const getAllUsers = async (req, res) => {
@@ -51,11 +55,10 @@ const getUserById = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const UserToUpdate = await User.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    const UserToUpdate = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
     if (!UserToUpdate) {
       return res.status(404).send();
     }
@@ -74,7 +77,7 @@ const updatePassword = async (req, res) => {
       return res.status(400).send("Invalid current password");
     }
 
-    userToUpdate.password = hashSync( req.body.newPassword,10);
+    userToUpdate.password = hashSync(req.body.newPassword, 10);
     await userToUpdate.save();
 
     res.send("Password updated successfully");
@@ -83,7 +86,6 @@ const updatePassword = async (req, res) => {
     res.status(400).send(error);
   }
 };
-
 
 const deleteUser = async (req, res) => {
   try {
@@ -117,5 +119,5 @@ module.exports = {
   deleteUser,
 
   deleteUsers,
-  updatePassword
+  updatePassword,
 };
