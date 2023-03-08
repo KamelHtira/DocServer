@@ -93,15 +93,9 @@ const currentMonthlyGain = async (req, res) => {
     const currentYear = currentDate.getFullYear();
   
     try {
-        const currentMonthPatients = await Appointments.find({ date: { $regex: `${currentMonth}/\\d{1,2}/${currentYear}` } });
-
+        const currentMonthPatients = await Appointments.count({ date: { $regex: `${currentMonth}/\\d{1,2}/${currentYear}` }, type : "Q" });
   
-      let total = 0;
-      currentMonthPatients.forEach((patient) => {
-        total++ ;
-      });
-  
-      res.status(200).json({ total });
+      res.status(200).json({ currentMonthPatients });
     } catch (error) {
       console.log(error);
       throw new Error('Failed to calculate total patients');
