@@ -8,7 +8,7 @@ const signupRouter = require('./routers/signup.router');
 const accountRouter = require('./routers/user.router');
 const statisticsRouter = require('./routers/statistics.router');
 const transactionRouter = require('./routers/transaction.router');
-
+const medicalFileRouter = require('./routers/medicalFile.router');
 require('dotenv').config();
 
 app = express()
@@ -17,6 +17,7 @@ app.use(cors())
 // Routers : 
 
 app.use(patientRouter);
+app.use(medicalFileRouter);
 app.use(accountRouter);
 app.use(appointmentRouter);
 app.use(signupRouter);
