@@ -1,5 +1,6 @@
 const Transaction = require("../models/transaction");
 const Appointments = require("../models/appointment");
+const {getLastXMonths} = require("../utils/getPreviousMonths");
 
 const currentMonthlyGain = async (req, res) => {
     const currentDate = new Date();
@@ -52,32 +53,27 @@ const currentMonthlyGain = async (req, res) => {
   const barChart = async (req, res) => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
-    const data = {
-      '1': { income: 0, outcome: 0 },
-      '2': { income: 0, outcome: 0 },
-      '3': { income: 0, outcome: 0 },
-      '4': { income: 0, outcome: 0 },
-      '5': { income: 0, outcome: 0 },
-      '6': { income: 0, outcome: 0 },
-      '7': { income: 0, outcome: 0 },
-      '8': { income: 0, outcome: 0 },
-      '9': { income: 0, outcome: 0 },
-      '10': { income: 0, outcome: 0 },
-      '11': { income: 0, outcome: 0 },
-      '12': { income: 0, outcome: 0 },
-    };
   
     try {
-      const currentMonthTransactions = await Transaction.find({
-        date: { $regex: `\\d{1,2}/\\d{1,2}/${currentYear}` },
+      const numberOfMonths = req.body.barMonths; 
+      const startDate = new Date(currentDate.setMonth(currentDate.getMonth() - numberOfMonths + 1));
+      const transactions = await Transaction.find({
+        createdAt: { $gte: startDate },
       });
+ 
   
-      currentMonthTransactions.forEach((transaction) => {
-        const month = transaction.date.split('/')[0];
-        if (transaction.type === 'Income') {
-          data[month].income += transaction.amount;
-        } else {
-          data[month].outcome += transaction.amount;
+      const lastXMonths = getLastXMonths(numberOfMonths);
+      const data = JSON.parse(lastXMonths);
+  
+      transactions.forEach((transaction) => {
+        const transactionDate = new Date(transaction.createdAt);
+        const transactionMonth = `${transactionDate.getFullYear()}-${(transactionDate.getMonth() + 1).toString().padStart(2, '0')}`;
+        if (data[transactionMonth]) {
+          if (transaction.type === 'Income') {
+            data[transactionMonth].income += parseInt(transaction.amount);
+          } else {
+            data[transactionMonth].outcome += parseInt(transaction.amount);
+          }
         }
       });
   
@@ -87,6 +83,9 @@ const currentMonthlyGain = async (req, res) => {
       throw new Error('Failed to calculate');
     }
   };
+  
+  
+  
 
   const currentMonthlyPatients = async (req, res) => {
     const currentDate = new Date();

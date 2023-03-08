@@ -40,7 +40,6 @@ db.once('open', function() {
 });
 
 
-
 app.get('/',(req,res)=>{
     res.json({response:"Doc Server is Working.."})
 })
