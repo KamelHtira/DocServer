@@ -8,6 +8,7 @@ const {
   deleteUser,
   deleteUsers,
   updatePassword,
+  getUserCustomFieldsById,
 } = require("../controllers/user.controller");
 
 router.use(express.json());
@@ -17,6 +18,8 @@ router.post("/Users", createUser);
 router.get("/Users", getAllUsers);
 
 router.get("/Users/:id", getUserById);
+
+router.get("/Users/customFields/:id", getUserCustomFieldsById);
 
 router.patch("/Users/:id", updateUser);
 

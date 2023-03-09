@@ -12,6 +12,8 @@ const createUser = async (req, res) => {
     address: req.body.address,
     state: req.body.state,
     type: req.body.type,
+    settings: req.body.settings,
+    customFields: req.body.customFields,
     access: req.body.access,
   });
 
@@ -48,6 +50,18 @@ const getUserById = async (req, res) => {
       return res.status(404).send();
     }
     res.send(UserToShow);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+const getUserCustomFieldsById = async (req, res) => {
+  try {
+    const customFields = await User.findById(req.params.id, "customFields");
+    if (!customFields) {
+      return res.status(404).send();
+    }
+    res.send(customFields);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -117,7 +131,7 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
-
+  getUserCustomFieldsById,
   deleteUsers,
   updatePassword,
 };

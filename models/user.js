@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
   address: String,
   state: String,
   type: String,
-  customFields: { type: {} },
+  customFields: { type: [] },
   settings: { type: {} },
   access: {
     type: {},
