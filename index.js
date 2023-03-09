@@ -6,20 +6,24 @@ const appointmentRouter = require('./routers/appointment.router');
 const loginRouter = require('./routers/login.router');
 const signupRouter = require('./routers/signup.router');
 const accountRouter = require('./routers/user.router');
+const statisticsRouter = require('./routers/statistics.router');
 const transactionRouter = require('./routers/transaction.router');
-
+const medicalFileRouter = require('./routers/medicalFile.router');
 require('dotenv').config();
 
 app = express()
 app.use(cors())
 
 // Routers : 
+
 app.use(patientRouter);
+app.use(medicalFileRouter);
 app.use(accountRouter);
 app.use(appointmentRouter);
 app.use(signupRouter);
 app.use(loginRouter);
 app.use(transactionRouter);
+app.use(statisticsRouter);
 
 
 app.use(express.json());
@@ -35,7 +39,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("Connected to MongoDB using Mongoose");
 });
-
 
 
 app.get('/',(req,res)=>{
