@@ -7,6 +7,7 @@ const {
   updateMedicalFile,
   deleteMedicalFile,
   deleteMedicalFiles,
+  getMedicalFileByPatientId,
 } = require("../controllers/medicalFile.controller");
 
 router.use(express.json());
@@ -17,7 +18,9 @@ router.get("/medicalFiles", getAllMedicalFiles);
 
 router.get("/medicalFiles/:id", getMedicalFileById);
 
-router.patch("/medicalFiles/:id", updateMedicalFile);
+router.get("/medicalFiles/:id", getMedicalFileById);
+
+router.get("/medicalFiles/patient/:id", getMedicalFileByPatientId);
 
 router.delete("/medicalFiles/:id", deleteMedicalFile);
 

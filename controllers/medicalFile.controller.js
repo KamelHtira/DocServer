@@ -31,6 +31,20 @@ const getMedicalFileById = async (req, res) => {
   }
 };
 
+const getMedicalFileByPatientId = async (req, res) => {
+  try {
+    const MedicalFileToShow = await MedicalFile.find({
+      patientId: req.params.id,
+    });
+    if (!MedicalFileToShow) {
+      return res.status(404).send();
+    }
+    res.send(MedicalFileToShow);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 const updateMedicalFile = async (req, res) => {
   try {
     const medicalFileToUpdate = await MedicalFile.findByIdAndUpdate(
@@ -82,4 +96,5 @@ module.exports = {
   updateMedicalFile,
   deleteMedicalFile,
   deleteMedicalFiles,
+  getMedicalFileByPatientId,
 };
