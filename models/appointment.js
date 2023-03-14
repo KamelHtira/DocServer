@@ -8,10 +8,12 @@ const appointmentSchema = mongoose.Schema({
   appointmentDate: String,
   description: String,
   phone: String,
+  initialType: String,
   type: String,
   sexe: String,
   isPaid: { type: Boolean, default: false },
-  amount: String,
+  amount: Number,
+  
 });
 
 const Appointment = mongoose.model("Appointment", appointmentSchema);
