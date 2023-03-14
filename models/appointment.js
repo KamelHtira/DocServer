@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const appointmentSchema = mongoose.Schema({
+  patientId: String,
   firstName: String,
   lastName: String,
   birthday: String,
@@ -13,7 +14,6 @@ const appointmentSchema = mongoose.Schema({
   sexe: String,
   isPaid: { type: Boolean, default: false },
   amount: Number,
-  
 });
 
 const Appointment = mongoose.model("Appointment", appointmentSchema);
