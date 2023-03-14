@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const medicalFileSchema = mongoose.Schema(
   {
-    patientID: String,
+    patientId: String,
     customFields: {},
     title: String,
     description: String,
