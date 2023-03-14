@@ -1,6 +1,41 @@
 const Transaction = require("../models/transaction");
 const Appointments = require("../models/appointment");
+const Patients = require("../models/patient");
 const {getLastXMonths} = require("../utils/getPreviousMonths");
+
+
+const patientAges = async (req,res) =>{
+  try{
+    const allpatients = await Patients.find();
+    const result = {
+      under18 : [0,0],
+      under40 : [0,0],
+      over40 : [0,0]
+    }
+
+    allpatients.forEach(patient => {
+      const birthDate =  new Date(patient.birthday);
+      const timeDiff = Date.now() - birthDate.getTime();
+      const age = Math.floor(timeDiff / 3.154e+10);
+
+      if(age <18){
+        result.under18[0]++;
+        result.under18[1]+=(100/allpatients.length);
+      } else if(age < 40){
+        result.under40[0]++;
+        result.under40[1]+=(100/allpatients.length);
+      } else {
+        result.over40[0]++;
+        result.over40[1]+=(100/allpatients.length);
+      }
+    });
+
+    res.json(result);
+  } catch(error){
+    console.log(error);
+    throw new Error('Failed to calculate patient ages');
+  }
+}
 
 const currentMonthlyGain = async (req, res) => {
     const currentDate = new Date();
@@ -52,11 +87,10 @@ const currentMonthlyGain = async (req, res) => {
   }
   const barChart = async (req, res) => {
     const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
   
     try {
-      const numberOfMonths = req.body.barMonths; 
-      const startDate = new Date(currentDate.setMonth(currentDate.getMonth() - numberOfMonths + 1));
+      const numberOfMonths = req.body.barMonths;
+      const startDate = new Date(currentDate.setMonth(currentDate.getMonth() - numberOfMonths ));
       const transactions = await Transaction.find({
         createdAt: { $gte: startDate },
       });
@@ -110,5 +144,6 @@ module.exports = {
     currentMonthlyGain,
     totalProfit,
     barChart,
-    currentMonthlyPatients
+    currentMonthlyPatients,
+    patientAges
 };
