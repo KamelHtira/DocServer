@@ -20,6 +20,8 @@ router.get("/medicalFiles/:id", getMedicalFileById);
 
 router.get("/medicalFiles/:id", getMedicalFileById);
 
+router.patch("/medicalFiles/:id", updateMedicalFile);
+
 router.get("/medicalFiles/patient/:id", getMedicalFileByPatientId);
 
 router.delete("/medicalFiles/:id", deleteMedicalFile);
