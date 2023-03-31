@@ -3,7 +3,32 @@ const Appointments = require("../models/appointment");
 const Patients = require("../models/patient");
 const {getLastXMonths} = require("../utils/getPreviousMonths");
 
+const confirmed_perentage = async(req,res) =>{
+let totalAppointment = 0;
+let totalAppointmentConfirmed = 0;
+try{
 
+  const allMobileAppointment = await Appointments.find({initialType : 'P'});
+  allMobileAppointment.forEach(appointment =>{
+    totalAppointment++ ;
+    if(appointment.type == "Q"){
+      totalAppointmentConfirmed++ ;
+    }
+   
+    
+  })
+  console.log(totalAppointment);
+  let result = totalAppointmentConfirmed*100/totalAppointment ;
+  res.status(200).json({result });
+
+}catch(error){
+  console.log(error);
+  throw new Error('Failed to calculate percentage');
+
+}
+
+
+}
 const patientAges = async (req,res) =>{
   try{
     const allpatients = await Patients.find();
@@ -145,5 +170,6 @@ module.exports = {
     totalProfit,
     barChart,
     currentMonthlyPatients,
-    patientAges
+    patientAges,
+    confirmed_perentage
 };
