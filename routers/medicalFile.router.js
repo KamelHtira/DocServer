@@ -10,7 +10,6 @@ const {
   getMedicalFileByPatientId,
 } = require("../controllers/medicalFile.controller");
 
-router.use(express.json());
 
 router.post("/medicalFiles", createMedicalFile);
 

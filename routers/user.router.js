@@ -11,8 +11,6 @@ const {
   getUserCustomFieldsById,
 } = require("../controllers/user.controller");
 
-router.use(express.json());
-
 router.post("/Users", createUser);
 
 router.get("/Users", getAllUsers);

@@ -9,7 +9,6 @@ const {
   deleteAppointments,
 } = require("../controllers/appointment.controller");
 
-router.use(express.json());
 
 router.post("/appointments", createAppointment);
 

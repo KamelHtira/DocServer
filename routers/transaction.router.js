@@ -9,8 +9,6 @@ const {
   deleteTransactions,
 } = require("../controllers/transactions.controller");
 
-router.use(express.json());
-
 router.post("/transactions", createTransaction);
 
 router.get("/transactions", getAllTransactions);

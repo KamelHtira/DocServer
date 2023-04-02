@@ -9,7 +9,6 @@ const {
   deletePatients,
 } = require("../controllers/patients.controller");
 
-router.use(express.json());
 
 router.post("/patients", createPatient);
 

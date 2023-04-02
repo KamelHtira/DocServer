@@ -5,7 +5,7 @@ const { createUser } = require("../controllers/user.controller");
 
 
 
-router.use(express.json());
+
 
 
 router.post("/signup",createUser);
