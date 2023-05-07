@@ -9,9 +9,8 @@ const mobileUserSchema = mongoose.Schema(
     password: String,
     phone: String,
     birthday: String,
-    address: String,
-    state: String,
     settings: { type: {} },
+    history: String,
   },
   { timestamps: true }
 );

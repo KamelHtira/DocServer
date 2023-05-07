@@ -9,14 +9,10 @@ const createMobileUser = async (req, res) => {
     lastName: req.body.lastName,
     phone: req.body.phone,
     birthday: req.body.birthday,
+    sexe: req.body.sexe,
     address: req.body.address,
-    state: req.body.state,
-    type: req.body.type,
     settings: req.body.settings,
-    customFields: req.body.customFields,
-    access: req.body.access,
   });
-
   mobileUser
     .save()
     .then((mobileUser) => {
@@ -127,12 +123,10 @@ const deleteMobileUsers = async (req, res) => {
     const deletedMobileUsers = await MobileUser.deleteMany({
       _id: { $in: req.body.MobileUserIds },
     });
-    res
-      .status(200)
-      .json({
-        message: "MobileUsers deleted successfully",
-        deletedMobileUsers,
-      });
+    res.status(200).json({
+      message: "MobileUsers deleted successfully",
+      deletedMobileUsers,
+    });
   } catch (error) {
     res.status(500).json({ message: "Failed to delete MobileUsers", error });
   }
