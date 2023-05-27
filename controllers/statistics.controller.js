@@ -144,9 +144,9 @@ const currentMonthlyPatients = async (req, res) => {
   const currentYear = currentDate.getFullYear();
 
   try {
-    const currentMonthPatients = await Appointments.count({
-      date: { $regex: `${currentMonth}/\\d{1,2}/${currentYear}` },
-      type: "Q",
+    const currentMonthPatients = await Patients.count({
+      // date: { $regex: `${currentMonth}/\\d{1,2}/${currentYear}` },
+      // type: "Q",
     });
 
     res.status(200).json({ currentMonthPatients });
