@@ -1,6 +1,10 @@
 const Appointment = require("../models/appointment");
 
 const createAppointment = async (req, res) => {
+  
+  if (req.body.type == "Q") {
+    req.body.queuedDate = new Date()
+  }
   const newAppointment = new Appointment(req.body);
   try {
     await newAppointment.save();
