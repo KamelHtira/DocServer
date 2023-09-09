@@ -11,6 +11,7 @@ const appointmentSchema = mongoose.Schema({
   description: String,
   phone: String,
   type: String,
+  queuedDate: String,
   sexe: String,
   isPaid: { type: Boolean, default: false },
   amount: Number,
