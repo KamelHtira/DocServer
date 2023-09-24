@@ -13,6 +13,7 @@ const medicalFileRouter = require("./routers/medicalFile.router");
 const mobileUserRouter = require("./routers/mobileUser.router");
 require("dotenv").config();
 
+const port = process.env.PORT || 3001;
 app = express();
 app.use(cors());
 app.use(express.json());
@@ -50,6 +51,6 @@ app.get("/", (req, res) => {
   res.json({ response: "Doc Server is Working.." });
 });
 
-app.listen(3001, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log("Doc server working on port 3001..");
 });
