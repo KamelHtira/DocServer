@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema({
       dashboard: false,
       patient: false,
       transaction: false,
-      setting: false,
+      setting: true,
       appointment: false,
     },
   },

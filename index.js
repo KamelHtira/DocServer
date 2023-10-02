@@ -35,7 +35,7 @@ app.use(express.json());
 
 mongoose.set("strictQuery", true);
 mongoose.connect(
-  "mongodb+srv://hedi:1234@cluster0.qfe1yrj.mongodb.net/?retryWrites=true&w=majority",
+  "mongodb+srv://htirakamel:WRFV8npNy3SQLsmI@medvizor.wmms7jg.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp",
   { useNewUrlParser: true }
 );
 

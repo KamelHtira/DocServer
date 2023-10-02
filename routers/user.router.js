@@ -9,11 +9,14 @@ const {
   deleteUsers,
   updatePassword,
   getUserCustomFieldsById,
+  getAllSubusers,
 } = require("../controllers/user.controller");
 
 router.post("/Users", createUser);
 
 router.get("/Users", getAllUsers);
+
+router.get("/Subusers", getAllSubusers);
 
 router.get("/Users/:id", getUserById);
 

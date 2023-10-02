@@ -43,6 +43,15 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const getAllSubusers = async (req, res) => {
+  try {
+    const Users = await User.find({ type: "subuser" });
+    res.send(Users);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 const getUserById = async (req, res) => {
   try {
     const UserToShow = await User.findById(req.params.id);
@@ -128,6 +137,7 @@ const deleteUsers = async (req, res) => {
 module.exports = {
   createUser,
   getAllUsers,
+  getAllSubusers,
   getUserById,
   updateUser,
   deleteUser,
