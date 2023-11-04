@@ -143,7 +143,7 @@ const barChart = async (req, res) => {
 async function countMedicalFilesLastMonths(numberOfMonths) {
   try {
     const currentDate = new Date(); // Get the current date
-    currentDate.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
+    // currentDate.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
 
     // Calculate the start date by subtracting 'numberOfMonths' from the current date
     const startDate = new Date(currentDate);
