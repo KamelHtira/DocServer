@@ -7,10 +7,13 @@ const {
   currentMonthlyPatients,
   patientAges,
   confirmed_perentage,
+  patientAttendanceChart,
 } = require("../controllers/statistics.controller");
 
 
 router.get("/currentmonthlygain", currentMonthlyGain);
+
+router.post("/patientAttendance", patientAttendanceChart);
 
 router.get("/confirmedPerentage", confirmed_perentage);
 

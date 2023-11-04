@@ -2,6 +2,7 @@ const Transaction = require("../models/transaction");
 const Appointments = require("../models/appointment");
 const Patients = require("../models/patient");
 const { getLastXMonths } = require("../utils/getPreviousMonths");
+const MedicalFile = require("../models/medicalFile");
 
 const confirmed_perentage = async (req, res) => {
   let totalAppointment = 0;
@@ -100,6 +101,7 @@ const totalProfit = async (req, res) => {
     throw new Error("Failed to calculate total profit");
   }
 };
+
 const barChart = async (req, res) => {
   const currentDate = new Date();
 
@@ -138,6 +140,75 @@ const barChart = async (req, res) => {
   }
 };
 
+async function countMedicalFilesLastMonths(numberOfMonths) {
+  try {
+    const currentDate = new Date(); // Get the current date
+    currentDate.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
+
+    // Calculate the start date by subtracting 'numberOfMonths' from the current date
+    const startDate = new Date(currentDate);
+    startDate.setMonth(currentDate.getMonth() - numberOfMonths);
+
+    // Create an object to store the monthly counts
+    const monthlyCounts = {};
+
+    // Loop through the months and set the count to 0 for each month
+    let currentDateCursor = new Date(startDate);
+    while (currentDateCursor <= currentDate) {
+      const year = currentDateCursor.getFullYear();
+      const month = currentDateCursor.getMonth() + 1; // Months are zero-based
+      monthlyCounts[`${year}-${month}`] = { count: 0 };
+      currentDateCursor.setMonth(currentDateCursor.getMonth() + 1);
+    }
+
+    // Query the database and update the count for each month
+    const medicalFiles = await MedicalFile.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: startDate, $lte: currentDate },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            year: { $year: '$createdAt' },
+            month: { $month: '$createdAt' },
+          },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    for (const entry of medicalFiles) {
+      const year = entry._id.year;
+      const month = entry._id.month;
+      const count = entry.count;
+      monthlyCounts[`${year}-${month}`] = { count };
+    }
+
+    return monthlyCounts;
+  } catch (error) {
+    console.error('Error counting medical files:', error);
+    throw error;
+  }
+}
+
+const patientAttendanceChart = async (req, res) => {
+  try {
+    const { barMonths } = req.body
+    countMedicalFilesLastMonths(barMonths)
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((error) => {
+        res.status(200).json({});
+      });
+
+  } catch (error) {
+    throw new Error("Failed to calculate");
+  }
+};
+
 const currentMonthlyPatients = async (req, res) => {
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth() + 1;
@@ -163,4 +234,5 @@ module.exports = {
   currentMonthlyPatients,
   patientAges,
   confirmed_perentage,
+  patientAttendanceChart
 };
