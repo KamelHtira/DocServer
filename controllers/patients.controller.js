@@ -1,14 +1,40 @@
 const Patient = require("../models/patient");
+const MedicalHistory = require("../models/medicalHistory");
 
 const createPatient = async (req, res) => {
-  const newPatient = new Patient(req.body);
+  const { medicalHistories, ...patient } = req.body;
+
   try {
+    // Create a new patient instance
+    const newPatient = new Patient(patient);
+
+    // Save the patient to MongoDB
     await newPatient.save();
-    res.status(201).send(newPatient);
+
+    // Get the newly created patient's ID
+    const patientId = newPatient._id;
+
+    // Update the medical histories array with the patientId field
+    const medicalHistoriesWithPatientId = medicalHistories.map((history) => ({
+      ...history,
+      patientId: patientId,
+    }));
+
+    // Save the medical histories to MongoDB
+    await MedicalHistory.insertMany(medicalHistoriesWithPatientId);
+
+    // Attach the patientId to the response
+    const response = {
+      ...newPatient.toObject(),
+      medicalHistories: medicalHistoriesWithPatientId,
+    };
+
+    res.status(201).send(response);
   } catch (error) {
     res.status(400).send(error);
   }
 };
+
 
 const getAllPatients = async (req, res) => {
   try {

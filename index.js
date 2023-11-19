@@ -10,6 +10,7 @@ const accountRouter = require("./routers/user.router");
 const statisticsRouter = require("./routers/statistics.router");
 const transactionRouter = require("./routers/transaction.router");
 const medicalFileRouter = require("./routers/medicalFile.router");
+const medicalHistoryRouter = require("./routers/medicalHistory.router");
 const mobileUserRouter = require("./routers/mobileUser.router");
 require("dotenv").config();
 
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use(patientRouter);
 app.use(mobileUserRouter);
 app.use(medicalFileRouter);
+app.use(medicalHistoryRouter);
 app.use(accountRouter);
 app.use(appointmentRouter);
 app.use(signupRouter);
