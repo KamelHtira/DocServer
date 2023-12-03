@@ -12,6 +12,7 @@ const transactionRouter = require("./routers/transaction.router");
 const medicalFileRouter = require("./routers/medicalFile.router");
 const medicalHistoryRouter = require("./routers/medicalHistory.router");
 const mobileUserRouter = require("./routers/mobileUser.router");
+const reportRouter = require("./routers/report.router");
 require("dotenv").config();
 
 const port = process.env.PORT || 3001;
@@ -21,17 +22,18 @@ app.use(express.json());
 
 // Routers :
 
+app.use(signupRouter);
+app.use(loginRouter);
 app.use(patientRouter);
 app.use(mobileUserRouter);
 app.use(medicalFileRouter);
 app.use(medicalHistoryRouter);
-app.use(accountRouter);
 app.use(appointmentRouter);
-app.use(signupRouter);
-app.use(loginRouter);
-app.use(mobileLoginRouter);
 app.use(transactionRouter);
+app.use(reportRouter);
 app.use(statisticsRouter);
+app.use(accountRouter);
+app.use(mobileLoginRouter);
 
 app.use(express.json());
 

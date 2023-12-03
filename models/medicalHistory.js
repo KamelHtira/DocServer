@@ -6,7 +6,7 @@ const medicalHistorySchema = mongoose.Schema(
     address: String,
     title: String,
     description: String,
-    date:String
+    date: String,
   },
   { timestamps: true }
 );
