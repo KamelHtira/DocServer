@@ -8,6 +8,7 @@ const {
   deleteMedicalFile,
   deleteMedicalFiles,
   getMedicalFileByPatientId,
+  getAllMedicalFilesBetweenTwoDates,
 } = require("../controllers/medicalFile.controller");
 
 
@@ -22,6 +23,8 @@ router.get("/medicalFiles/:id", getMedicalFileById);
 router.patch("/medicalFiles/:id", updateMedicalFile);
 
 router.get("/medicalFiles/patient/:id", getMedicalFileByPatientId);
+
+router.get("/medicalFiles/report/get-dates", getAllMedicalFilesBetweenTwoDates);
 
 router.delete("/medicalFiles/:id", deleteMedicalFile);
 
