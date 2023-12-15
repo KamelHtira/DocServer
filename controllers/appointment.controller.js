@@ -1,7 +1,7 @@
 const Appointment = require("../models/appointment");
 
 const createAppointment = async (req, res) => {
-  
+
   if (req.body.type == "Q") {
     req.body.queuedDate = new Date()
   }
@@ -17,6 +17,16 @@ const createAppointment = async (req, res) => {
 const getAllAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find({});
+    res.send(appointments);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+
+const getConfirmedAppointments = async (req, res) => {
+  try {
+    const appointments = await Appointment.find({ type: "C" });
     res.send(appointments);
   } catch (error) {
     res.status(500).send(error);
@@ -86,4 +96,5 @@ module.exports = {
   updateAppointment,
   deleteAppointment,
   deleteAppointments,
+  getConfirmedAppointments
 };
