@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 
 const patientSchema = mongoose.Schema({
+  cnamId: String, //tn
+  assuranceType: String, //tn
   firstName: String,
   lastName: String,
   email: String,

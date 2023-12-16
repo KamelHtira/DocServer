@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
+  cnamCode: String, //tn
+  cnamCenterRef: String, //tn
+  VAT: Number, //tn
+  MTM: Number, //tn
+  consultationPrice: Number, //tn
   email: String,
   password: String,
   firstName: String,
