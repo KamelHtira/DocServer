@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const patientSchema = mongoose.Schema({
   cnamId: String, //tn
-  assuranceType: String, //tn
+  assuranceType: String, //tn FPUB FPRV FR
   firstName: String,
   lastName: String,
   email: String,
