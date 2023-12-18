@@ -6,6 +6,7 @@ const medicalFileSchema = mongoose.Schema(
     customFields: {},
     title: String,
     description: String,
+    assuranceType: String
   },
   { timestamps: true }
 );
