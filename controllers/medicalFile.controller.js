@@ -70,7 +70,7 @@ const getAllMedicalFilesBetweenTwoDates = async (req, res) => {
     const patientIds = medicalFiles.map(file => file.patientId);
 
     // Find patients based on patientIds
-    const patients = await Patient.find({ _id: { $in: patientIds } });
+    const patients = await Patient.find({ _id: { $in: patientIds }, assuranceType: "FPUB" });
 
     // Create the final response object
     const result = medicalFiles.map(file => {
@@ -83,6 +83,7 @@ const getAllMedicalFilesBetweenTwoDates = async (req, res) => {
         firstName: patient ? patient.firstName : null,
         lastName: patient ? patient.lastName : null,
         birthday: patient ? patient.birthday : null,
+        cnamId: patient ? patient.cnamId : null,
       };
     });
 
