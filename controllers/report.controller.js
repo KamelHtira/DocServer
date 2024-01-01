@@ -10,6 +10,16 @@ const createReport = async (req, res) => {
   }
 };
 
+const createCnamReport = async (req, res) => {
+  const newReport = new Report(req.body);
+  try {
+    await newReport.save();
+    res.status(201).send(newReport);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
 const getAllReports = async (req, res) => {
   try {
     const reports = await Report.find({});
@@ -63,9 +73,7 @@ const updateReport = async (req, res) => {
 
 const deleteReport = async (req, res) => {
   try {
-    const reportToDelete = await Report.findByIdAndDelete(
-      req.params.id
-    );
+    const reportToDelete = await Report.findByIdAndDelete(req.params.id);
     if (!reportToDelete) {
       return res.status(404).send();
     }
@@ -97,4 +105,5 @@ module.exports = {
   deleteReport,
   deleteReports,
   getReportByPatientId,
+  createCnamReport,
 };

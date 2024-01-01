@@ -7,12 +7,17 @@ const {
   updatePatient,
   deletePatient,
   deletePatients,
+  getNextPatient,
+  getPreviousPatient,
 } = require("../controllers/patients.controller");
-
 
 router.post("/patients", createPatient);
 
 router.get("/patients", getAllPatients);
+
+router.get("/patients/next", getNextPatient);
+
+router.get("/patients/prec", getPreviousPatient);
 
 router.get("/patients/:id", getPatientById);
 

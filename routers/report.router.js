@@ -8,10 +8,12 @@ const {
   deleteReport,
   deleteReports,
   getReportByPatientId,
+  createCnamReport,
 } = require("../controllers/report.controller");
 
-
 router.post("/reports", createReport);
+
+router.post("/reports/cnam", createCnamReport);
 
 router.get("/reports", getAllReports);
 

@@ -15,6 +15,11 @@ const userSchema = mongoose.Schema({
   address: String,
   state: String,
   type: String,
+  currentMedicalFilesSlip: [String],
+  currentMedicalFilesSlipStartDate: {
+    type: String,
+    default: new Date().toISOString(),
+  },
   customFields: { type: [] },
   settings: { type: {} },
   access: {

@@ -4,6 +4,7 @@ const Patient = require("../models/patient");
 const createMedicalFile = async (req, res) => {
   const newMedicalFile = new MedicalFile(req.body);
   try {
+    console.log(req.body);
     await newMedicalFile.save();
     res.status(201).send(newMedicalFile);
   } catch (error) {
@@ -32,11 +33,72 @@ const getMedicalFileById = async (req, res) => {
   }
 };
 
+const getMedicalFilesByIds = async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    // Check if the 'ids' field is present in the request body
+    if (!ids || !Array.isArray(ids)) {
+      return res
+        .status(400)
+        .json({ error: "Invalid input. 'ids' field must be an array of IDs." });
+    }
+
+    // Find medical files by array of IDs
+    const medicalFiles = await MedicalFile.find({ _id: { $in: ids } });
+
+    res.json(medicalFiles);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const getMedicalFilesAndPatientCnamIdByIds = async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    // Check if the 'ids' field is present in the request body
+    if (!ids || !Array.isArray(ids)) {
+      return res
+        .status(400)
+        .json({ error: "Invalid input. 'ids' field must be an array of IDs." });
+    }
+
+    // Find medical files by array of IDs
+    const medicalFiles = await MedicalFile.find({ _id: { $in: ids } }).populate(
+      {
+        path: "patientId",
+        select: "cnamId firstName lastName birthday", // Include other patient fields as needed
+      }
+    );
+
+    // Extract the desired information for each result
+    const extractedData = medicalFiles.map(({ patientId, createdAt }) => {
+      const { cnamId, firstName, lastName, birthday } = patientId;
+
+      return {
+        cnamId,
+        firstName,
+        lastName,
+        birthday,
+        medicalFileDate: createdAt,
+      };
+    });
+
+    res.json(extractedData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const getMedicalFileByPatientId = async (req, res) => {
   try {
     const MedicalFileToShow = await MedicalFile.find({
       patientId: req.params.id,
     });
+    console.log(MedicalFileToShow);
     if (!MedicalFileToShow) {
       return res.status(404).send();
     }
@@ -51,14 +113,19 @@ const getAllMedicalFilesBetweenTwoDates = async (req, res) => {
     const { from, to } = req.query;
 
     if (!from || !to) {
-      return res.status(400).json({ error: 'Both from and to dates are required in the query parameters.' });
+      return res.status(400).json({
+        error: "Both from and to dates are required in the query parameters.",
+      });
     }
 
     const fromDate = new Date(from);
     const toDate = new Date(to);
 
     if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
-      return res.status(400).json({ error: 'Invalid date format. Please use ISO date format (e.g., YYYY-MM-DDTHH:mm:ss.sssZ).' });
+      return res.status(400).json({
+        error:
+          "Invalid date format. Please use ISO date format (e.g., YYYY-MM-DDTHH:mm:ss.sssZ).",
+      });
     }
 
     // Find medical files between the specified dates
@@ -67,14 +134,19 @@ const getAllMedicalFilesBetweenTwoDates = async (req, res) => {
     });
 
     // Extract patientIds from medicalFiles
-    const patientIds = medicalFiles.map(file => file.patientId);
+    const patientIds = medicalFiles.map((file) => file.patientId);
 
     // Find patients based on patientIds
-    const patients = await Patient.find({ _id: { $in: patientIds }, assuranceType: "FPUB" });
+    const patients = await Patient.find({
+      _id: { $in: patientIds },
+      assuranceType: "FPUB",
+    });
 
     // Create the final response object
-    const result = medicalFiles.map(file => {
-      const patient = patients.find(patient => patient._id.equals(file.patientId));
+    const result = medicalFiles.map((file) => {
+      const patient = patients.find((patient) =>
+        patient._id.equals(file.patientId)
+      );
 
       return {
         medicalFileId: file._id,
@@ -147,4 +219,6 @@ module.exports = {
   deleteMedicalFiles,
   getMedicalFileByPatientId,
   getAllMedicalFilesBetweenTwoDates,
+  getMedicalFilesByIds,
+  getMedicalFilesAndPatientCnamIdByIds,
 };

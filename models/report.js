@@ -4,9 +4,10 @@ const reportSchema = mongoose.Schema(
   {
     startDate: String,
     endDate: String,
-    reportType: String,
+    reportType: String, // P patients, T transactions, CNAM cnam
     fileType: String,
     size: String,
+    listRecordsIds: [String],
   },
   { timestamps: true }
 );

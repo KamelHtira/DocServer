@@ -10,9 +10,14 @@ const {
   updatePassword,
   getUserCustomFieldsById,
   getAllSubusers,
+  addMedicalFileToUser,
+  getUserCnamSlipById,
+  resetUserCnamSlip,
 } = require("../controllers/user.controller");
 
 router.post("/Users", createUser);
+
+router.post("/Users/medicalFile/:userId", addMedicalFileToUser);
 
 router.get("/Users", getAllUsers);
 
@@ -22,7 +27,11 @@ router.get("/Users/:id", getUserById);
 
 router.get("/Users/customFields/:id", getUserCustomFieldsById);
 
+router.get("/Users/currentMedicalFilesSlip/:id", getUserCnamSlipById);
+
 router.patch("/Users/:id", updateUser);
+
+router.patch("/Users/reset-cnam-slip/:id", resetUserCnamSlip);
 
 router.patch("/Password/:id", updatePassword);
 

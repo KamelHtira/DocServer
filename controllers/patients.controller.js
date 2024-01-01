@@ -35,7 +35,6 @@ const createPatient = async (req, res) => {
   }
 };
 
-
 const getAllPatients = async (req, res) => {
   try {
     const Patients = await Patient.find({});
@@ -97,12 +96,69 @@ const deletePatients = async (req, res) => {
   }
 };
 
+const getPreviousPatient = async (req, res) => {
+  try {
+    const { currentPatientCreatedAt } = req.query;
+    console.log(currentPatientCreatedAt);
+    // Find the current patient
+    const currentPatient = await Patient.findOne({
+      createdAt: currentPatientCreatedAt,
+    }).lean();
+    console.log(currentPatient);
+    if (!currentPatient) {
+      return res.status(404).json({ error: "Current patient not found" });
+    }
+
+    // Find the previous patient
+    const previousPatient = await Patient.findOne({
+      createdAt: { $lt: currentPatient.createdAt },
+    })
+      .sort({ createdAt: -1 })
+      .limit(1)
+      .lean();
+    console.log(previousPatient);
+    res.json(previousPatient);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const getNextPatient = async (req, res) => {
+  try {
+    const { currentPatientCreatedAt } = req.query;
+
+    // Find the current patient
+    const currentPatient = await Patient.findOne({
+      createdAt: currentPatientCreatedAt,
+    }).lean();
+
+    if (!currentPatient) {
+      return res.status(404).json({ error: "Current patient not found" });
+    }
+
+    // Find the next patient
+    const nextPatient = await Patient.findOne({
+      createdAt: { $gt: currentPatient.createdAt },
+    })
+      .sort({ createdAt: 1 })
+      .limit(1)
+      .lean();
+
+    res.json(nextPatient);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   createPatient,
   getAllPatients,
   getPatientById,
   updatePatient,
   deletePatient,
-
   deletePatients,
+  getPreviousPatient,
+  getNextPatient,
 };

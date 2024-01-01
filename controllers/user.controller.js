@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const { hashSync, compareSync } = require("bcrypt");
+const MedicalFile = require("../models/medicalFile");
 
 const createUser = async (req, res) => {
   const user = new User({
@@ -76,6 +77,77 @@ const getUserCustomFieldsById = async (req, res) => {
   }
 };
 
+const getUserCnamSlipById = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Fetch the user with the 'currentMedicalFilesSlip' field
+    const user = await User.findById(
+      userId,
+      "currentMedicalFilesSlip currentMedicalFilesSlipStartDate"
+    );
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Extract medical file IDs from 'currentMedicalFilesSlip'
+    const medicalFileIds = user.currentMedicalFilesSlip;
+
+    // Fetch details for each medical file
+    const patientDetails = await Promise.all(
+      medicalFileIds.map(async (medicalFileId) => {
+        // Fetch the medical file with additional fields
+        const medicalFile = await MedicalFile.findById(
+          medicalFileId,
+          "patientId createdAt amount" // Add 'amount' to fetch from MedicalFile
+        ).populate("patientId", "firstName lastName birthday cnamId");
+
+
+        if (!medicalFile || !medicalFile.patientId) {
+          return null; // Medical file not found, you can handle this case accordingly
+        }
+
+        // Extract relevant information
+
+        const { firstName, lastName, birthday, cnamId } = medicalFile.patientId;
+
+        return {
+          firstName,
+          lastName,
+          birthday,
+          cnamId,
+          createdAt: medicalFile.createdAt,
+          amount: medicalFile.amount, // Include 'amount' in the response
+        };
+      })
+    );
+
+    // Filter out null values (medical files not found)
+    const validPatientDetails = patientDetails.filter(
+      (details) => details !== null
+    );
+
+    // Calculate totalAmount and numberOfMedicalFiles
+    const totalAmount = validPatientDetails.reduce(
+      (total, details) => total + (details?.amount || 0),
+      0
+    );
+    const numberOfMedicalFiles = validPatientDetails.length;
+
+    res.json({
+      slip: validPatientDetails,
+      totalAmount,
+      numberOfMedicalFiles,
+      currentMedicalFilesSlip: user.currentMedicalFilesSlip,
+      currentMedicalFilesSlipStartDate: user.currentMedicalFilesSlipStartDate,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const updateUser = async (req, res) => {
   try {
     const UserToUpdate = await User.findByIdAndUpdate(req.params.id, req.body, {
@@ -90,6 +162,51 @@ const updateUser = async (req, res) => {
     res.status(400).send(error);
   }
 };
+
+const resetUserCnamSlip = async (req, res) => {
+  try {
+    console.log("resetUserCnamSlip");
+    const userId = req.params.id;
+
+    // Fetch the user to get the currentMedicalFilesSlip
+    const userToUpdate = await User.findById(userId);
+
+    if (!userToUpdate) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Update cnamStatus to "E" for all medical files in currentMedicalFilesSlip
+    const medicalFileIds = userToUpdate.currentMedicalFilesSlip;
+    await MedicalFile.updateMany(
+      { _id: { $in: medicalFileIds } },
+      { $set: { cnamStatus: "E" } }
+    );
+
+    // Reset currentMedicalFilesSlipStartDate to new Date().toISOString()
+    userToUpdate.currentMedicalFilesSlipStartDate = new Date().toISOString();
+
+    // Reset currentMedicalFilesSlip to an empty array
+    userToUpdate.currentMedicalFilesSlip = [];
+
+    // Use updateOne to update the user
+    await User.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          currentMedicalFilesSlipStartDate:
+            userToUpdate.currentMedicalFilesSlipStartDate,
+          currentMedicalFilesSlip: userToUpdate.currentMedicalFilesSlip,
+        },
+      }
+    );
+
+    res.json({ message: "User CnamSlip reset successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const updatePassword = async (req, res) => {
   try {
     const userToUpdate = await User.findById(req.params.id);
@@ -134,6 +251,53 @@ const deleteUsers = async (req, res) => {
   }
 };
 
+const addMedicalFileToUser = async (req, res) => {
+  try {
+    const { medicalFileId } = req.body;
+    const userId = req.params.userId;
+
+    // Check if the 'medicalFileId' field is present in the request body
+    if (!medicalFileId) {
+      return res
+        .status(400)
+        .json({ error: "Invalid input. 'medicalFileId' is required." });
+    }
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Find the medical file and update its cnamStatus to "A"
+    const updatedMedicalFile = await MedicalFile.findOneAndUpdate(
+      { _id: medicalFileId },
+      { $set: { cnamStatus: "A" } },
+      { new: true }
+    );
+
+    // Check if the medical file was found and updated
+    if (!updatedMedicalFile) {
+      return res
+        .status(404)
+        .json({ error: "Medical file not found or could not be updated" });
+    }
+
+    // Use updateOne to add the medicalFileId to the user's currentMedicalFilesSlip array
+    await User.updateOne(
+      { _id: userId },
+      { $addToSet: { currentMedicalFilesSlip: medicalFileId } }
+    );
+
+    res.json({
+      message: "Medical file added to user's currentMedicalFilesSlip",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -144,4 +308,7 @@ module.exports = {
   getUserCustomFieldsById,
   deleteUsers,
   updatePassword,
+  addMedicalFileToUser,
+  getUserCnamSlipById,
+  resetUserCnamSlip,
 };

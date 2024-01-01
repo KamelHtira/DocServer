@@ -9,6 +9,7 @@ const {
   deleteMedicalFiles,
   getMedicalFileByPatientId,
   getAllMedicalFilesBetweenTwoDates,
+  getMedicalFilesAndPatientCnamIdByIds,
 } = require("../controllers/medicalFile.controller");
 
 
@@ -18,11 +19,11 @@ router.get("/medicalFiles", getAllMedicalFiles);
 
 router.get("/medicalFiles/:id", getMedicalFileById);
 
-router.get("/medicalFiles/:id", getMedicalFileById);
-
 router.patch("/medicalFiles/:id", updateMedicalFile);
 
 router.get("/medicalFiles/patient/:id", getMedicalFileByPatientId);
+
+router.post("/medicalFiles/cnamId", getMedicalFilesAndPatientCnamIdByIds);
 
 router.get("/medicalFiles/report/get-dates", getAllMedicalFilesBetweenTwoDates);
 
