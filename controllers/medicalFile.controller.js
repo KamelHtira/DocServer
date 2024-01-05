@@ -4,7 +4,7 @@ const Patient = require("../models/patient");
 const createMedicalFile = async (req, res) => {
   const newMedicalFile = new MedicalFile(req.body);
   try {
-    console.log(req.body);
+
     await newMedicalFile.save();
     res.status(201).send(newMedicalFile);
   } catch (error) {
@@ -75,15 +75,17 @@ const getMedicalFilesAndPatientCnamIdByIds = async (req, res) => {
 
     // Extract the desired information for each result
     const extractedData = medicalFiles.map(({ patientId, createdAt }) => {
-      const { cnamId, firstName, lastName, birthday } = patientId;
+      if (patientId) {
+        const { cnamId, firstName, lastName, birthday } = patientId;
 
-      return {
-        cnamId,
-        firstName,
-        lastName,
-        birthday,
-        medicalFileDate: createdAt,
-      };
+        return {
+          cnamId,
+          firstName,
+          lastName,
+          birthday,
+          medicalFileDate: createdAt,
+        };
+      }
     });
 
     res.json(extractedData);
@@ -98,7 +100,7 @@ const getMedicalFileByPatientId = async (req, res) => {
     const MedicalFileToShow = await MedicalFile.find({
       patientId: req.params.id,
     });
-    console.log(MedicalFileToShow);
+
     if (!MedicalFileToShow) {
       return res.status(404).send();
     }
