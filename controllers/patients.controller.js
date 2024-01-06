@@ -104,7 +104,7 @@ const getPreviousPatient = async (req, res) => {
     const currentPatient = await Patient.findOne({
       createdAt: currentPatientCreatedAt,
     }).lean();
-    console.log(currentPatient);
+
     if (!currentPatient) {
       return res.status(404).json({ error: "Current patient not found" });
     }
