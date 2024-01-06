@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Counter = require("./Counter");
+const Counter = require("./counter");
 
 const patientSchema = mongoose.Schema(
   {
