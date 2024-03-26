@@ -15,6 +15,7 @@ const patientSchema = mongoose.Schema(
     address: String,
     phone: String,
     civilState: String,
+    customFields: [{}],
   },
   { timestamps: true }
 );

@@ -4,7 +4,7 @@ const userSchema = mongoose.Schema({
   cnamCode: String, //tn
   cnamCenterRef: String, //tn
   VAT: Number, //tn
-  MTM: Number, //tn
+  MTM: Number, //tn montant tiket moderatuer
   consultationPrice: Number, //tn
   email: String,
   password: String,
@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema({
     type: String,
     default: new Date().toISOString(),
   },
-  customFields: { type: [] },
+  customFields: { type: [{}] },
   settings: { type: {} },
   access: {
     type: {},

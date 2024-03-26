@@ -152,6 +152,72 @@ const getNextPatient = async (req, res) => {
   }
 };
 
+const addCustomField = async (req, res) => {
+  try {
+    const { patientId, customField } = req.body;
+
+    const patient = await Patient.findByIdAndUpdate(
+      patientId,
+      {
+        $push: {
+          customFields: customField,
+        },
+      },
+      { new: true }
+    );
+
+    if (!patient) {
+      res.status(404).json({ message: "Patient not found" });
+      return;
+    }
+
+    res.json({ patient });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error adding custom field" });
+  }
+};
+
+const getCustomFields = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const patient = await Patient.findById(id);
+
+    if (!patient) {
+      res.status(404).json({ message: "Patient not found" });
+      return;
+    }
+
+    res.json({ customFields: patient.customFields });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error getting custom fields" });
+  }
+};
+
+const deleteCustomField = async (req, res) => {
+  try {
+    const { patientId, fieldName } = req.body;
+    console.log(req.body);
+    const patient = await Patient.findByIdAndUpdate(patientId, {
+      $pull: {
+        customFields: { name: fieldName },
+      },
+    });
+
+    if (!patient) {
+      res.status(404).json({ message: "Patient not found" });
+      return;
+    }
+
+    res.json({ message: "Custom field deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error deleting custom field" });
+  }
+};
+
 module.exports = {
   createPatient,
   getAllPatients,
@@ -161,4 +227,7 @@ module.exports = {
   deletePatients,
   getPreviousPatient,
   getNextPatient,
+  addCustomField,
+  getCustomFields,
+  deleteCustomField,
 };

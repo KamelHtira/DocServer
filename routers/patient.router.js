@@ -9,7 +9,12 @@ const {
   deletePatients,
   getNextPatient,
   getPreviousPatient,
+  addCustomField,
+  getCustomFields,
+  deleteCustomField,
 } = require("../controllers/patients.controller");
+
+router.delete("/patients/specificField", deleteCustomField);
 
 router.post("/patients", createPatient);
 
@@ -26,5 +31,10 @@ router.patch("/patients/:id", updatePatient);
 router.delete("/patients/:id", deletePatient);
 
 router.delete("/patients", deletePatients);
+
+router.post("/patients/specificField", addCustomField);
+
+router.get("/patients/specificField/:id", getCustomFields);
+
 
 module.exports = router;

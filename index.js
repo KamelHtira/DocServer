@@ -13,6 +13,7 @@ const medicalFileRouter = require("./routers/medicalFile.router");
 const medicalHistoryRouter = require("./routers/medicalHistory.router");
 const mobileUserRouter = require("./routers/mobileUser.router");
 const reportRouter = require("./routers/report.router");
+const specificFields = require("./routers/specificFields.router");
 require("dotenv").config();
 
 const port = process.env.PORT || 3001;
@@ -34,6 +35,7 @@ app.use(reportRouter);
 app.use(statisticsRouter);
 app.use(accountRouter);
 app.use(mobileLoginRouter);
+app.use(specificFields);
 
 app.use(express.json());
 

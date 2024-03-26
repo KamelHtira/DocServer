@@ -1,0 +1,116 @@
+classDiagram
+    class Appointment {
+        +id
+        +patientId
+        +firstName
+        +lastName
+        +birthday
+        +createdAt
+        +initialType
+        +appointmentDate
+        +description
+        +phone
+        +type
+        +queuedDate
+        +sexe
+        +isPaid
+        +amount
+    }
+    class MedicalFile {
+        +id
+        +patientId
+        +customFields
+        +title
+        +amount
+        +description
+        +assuranceType
+        +cnamStatus
+        +createdAt
+        +updatedAt
+    }
+    class MedicalHistory {
+        +id
+        +patientId
+        +address
+        +title
+        +description
+        +date
+        +createdAt
+        +updatedAt
+    }
+    class MobileUser {
+        +id
+        +firstName
+        +lastName
+        +sexe
+        +email
+        +password
+        +phone
+        +birthday
+        +settings
+        +history
+        +createdAt
+        +updatedAt
+    }
+    class Patient {
+        +id
+        +patientNumber
+        +cnamId
+        +assuranceType
+        +firstName
+        +lastName
+        +email
+        +birthday
+        +birthdayType
+        +sexe
+        +address
+        +phone
+        +civilState
+        +createdAt
+        +updatedAt
+    }
+    class Report {
+        +id
+        +startDate
+        +endDate
+        +reportType
+        +fileType
+        +size
+        +listRecordsIds
+        +createdAt
+        +updatedAt
+    }
+    class Transaction {
+        +id
+        +amount
+        +description
+        +type
+        +date
+        +createdAt
+        +updatedAt
+    }
+    class User {
+        +id
+        +cnamCode
+        +cnamCenterRef
+        +VAT
+        +MTM
+        +consultationPrice
+        +email
+        +password
+        +firstName
+        +lastName
+        +phone
+        +birthday
+        +address
+        +state
+        +type
+        +currentMedicalFilesSlip
+        +currentMedicalFilesSlipStartDate
+        +customFields
+        +settings
+        +access
+    }
+    Patient "1" -- "*" MedicalFile
+    Patient "1" -- "*" Appointment
+    Patient "1" -- "*" MedicalHistory
