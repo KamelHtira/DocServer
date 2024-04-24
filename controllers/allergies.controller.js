@@ -1,4 +1,4 @@
-const Allergies = require("../models/specifcFields");
+const Allergies = require("../models/allergies");
 
 const createAllergie = async (req, res) => {
   const newAllergies = new Allergies(req.body);

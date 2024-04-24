@@ -12,6 +12,14 @@ const {
   addCustomField,
   getCustomFields,
   deleteCustomField,
+  addAllergy,
+  getAllergies,
+  deleteAllergy,
+  updateAllergy,
+  addMedicines,
+  updateMedicine,
+  deleteMedicine,
+  getMedicines,
 } = require("../controllers/patients.controller");
 
 router.delete("/patients/specificField", deleteCustomField);
@@ -36,5 +44,24 @@ router.post("/patients/specificField", addCustomField);
 
 router.get("/patients/specificField/:id", getCustomFields);
 
+// allergy
+
+router.post("/patients/allergies/add", addAllergy);
+
+router.patch("/patients/allergies/update", updateAllergy);
+
+router.get("/patients/allergies/:id", getAllergies);
+
+router.delete("/patients/allergies/delete", deleteAllergy);
+
+// medicine
+
+router.post("/patients/medicines/add", addMedicines);
+
+router.patch("/patients/medicines/update", updateMedicine);
+
+router.get("/patients/medicines/:id", getMedicines);
+
+router.delete("/patients/medicines/delete", deleteMedicine);
 
 module.exports = router;
