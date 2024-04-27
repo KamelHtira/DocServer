@@ -1,6 +1,6 @@
 const Medicines = require("../models/medicines");
 
-const createAllergie = async (req, res) => {
+const createMedicine = async (req, res) => {
   const newMedicines = new Medicines(req.body);
   try {
     await newMedicines.save();
@@ -31,7 +31,7 @@ const getMedicinesById = async (req, res) => {
   }
 };
 
-const updateAllergie = async (req, res) => {
+const updateMedicine = async (req, res) => {
   try {
     const medicinesToUpdate = await Medicines.findByIdAndUpdate(
       req.params.id,
@@ -47,7 +47,7 @@ const updateAllergie = async (req, res) => {
   }
 };
 
-const deleteAllergie = async (req, res) => {
+const deleteMedicine = async (req, res) => {
   try {
     const medicinesToDelete = await Medicines.findByIdAndDelete(
       req.params.id
@@ -75,10 +75,10 @@ const deleteMedicines = async (req, res) => {
 };
 
 module.exports = {
-  createAllergie,
+  createMedicine,
   getAllMedicines,
   getMedicinesById,
-  updateAllergie,
+  updateMedicine,
   deleteMedicines,
-  deleteAllergie,
+  deleteMedicine,
 };
