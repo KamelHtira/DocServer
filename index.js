@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const morgan = require("morgan");
+
 const patientRouter = require("./routers/patient.router");
 const appointmentRouter = require("./routers/appointment.router");
 const loginRouter = require("./routers/login.router");
@@ -19,12 +21,15 @@ const medicines = require("./routers/medicines.router");
 require("dotenv").config();
 
 const port = process.env.PORT || 3001;
-app = express();
+const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-// Routers :
+// Middleware to log requests
+app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
 
+// Routers
 app.use(signupRouter);
 app.use(loginRouter);
 app.use(patientRouter);
@@ -40,8 +45,6 @@ app.use(mobileLoginRouter);
 app.use(specificFields);
 app.use(allergies);
 app.use(medicines);
-
-app.use(express.json());
 
 mongoose.set("strictQuery", true);
 mongoose.connect(
@@ -62,5 +65,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, "0.0.0.0", () => {
-  console.log("Doc server working on port 3001..");
+  console.log(`Doc server working on port ${port}..`);
 });
